@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ttabu0430의 개인 블로그">
+  <title>ttabu0430 블로그</title>
+  <script>
+    try {
+      const theme = localStorage.getItem('ttabu0430-blog-theme');
+      if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
+    } catch {}
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #faf9f6;
+      --ink: #242622;
+      --muted: #62665d;
+      --line: #dbded5;
+      --accent: #345e48;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme]) {
+        color-scheme: dark;
+        --paper: #171a18;
+        --ink: #ebeee8;
+        --muted: #aab2a8;
+        --line: #383e38;
+        --accent: #a6cbb4;
+      }
+    }
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --paper: #171a18;
+      --ink: #ebeee8;
+      --muted: #aab2a8;
+      --line: #383e38;
+      --accent: #a6cbb4;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 1rem/1.65 "Inter", "Malgun Gothic", system-ui, sans-serif;
+    }
+    .page { width: min(42rem, calc(100% - 2.5rem)); margin-inline: auto; }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-block: 1.5rem;
+      border-bottom: 1px solid var(--line);
+    }
+    a { color: var(--accent); text-underline-offset: .22em; }
+    .home { color: var(--ink); text-decoration: none; font-weight: 700; }
+    button {
+      border: 1px solid var(--line);
+      border-radius: 100vmax;
+      min-height: 44px;
+      padding: .35rem .85rem;
+      background: transparent;
+      color: var(--ink);
+      font: inherit;
+      font-size: .875rem;
+      cursor: pointer;
+    }
+    button:hover { border-color: var(--accent); }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+    main { padding-block: clamp(3rem, 12vw, 6rem); }
+    h1 { margin: 0 0 1.5rem; font-size: clamp(2rem, 6vw, 3rem); line-height: 1.2; }
+    .posts { list-style: none; padding: 0; margin: 0; }
+    .post {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: .25rem 1rem;
+      padding-block: .9rem;
+      border-top: 1px solid var(--line);
+    }
+    time { color: var(--muted); font-size: .875rem; }
+    .empty { color: var(--muted); margin: 0; padding-block: 1rem; border-top: 1px solid var(--line); }
+    .posts:has(.post) + .empty { display: none; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <a class="home" href="./">ttabu0430 블로그</a>
+      <button id="theme-toggle" type="button" hidden>다크 모드로 전환</button>
+    </header>
+    <main>
+      <h1>글 목록</h1>
+      <ul class="posts">
+        <!-- 글을 게시할 때 최신 글을 위에 추가합니다.
+        <li class="post">
+          <a href="./글-주소.html">글 제목</a>
+          <time datetime="YYYY-MM-DD">YYYY.MM.DD</time>
+        </li>
+        -->
+      </ul>
+      <p class="empty">아직 게시된 글이 없습니다.</p>
+    </main>
+  </div>
+  <script>
+    const root = document.documentElement;
+    const toggle = document.getElementById('theme-toggle');
+    const systemTheme = matchMedia('(prefers-color-scheme: dark)');
+
+    function currentTheme() {
+      return root.dataset.theme || (systemTheme.matches ? 'dark' : 'light');
+    }
+
+    function updateToggle() {
+      toggle.textContent = currentTheme() === 'dark' ? '라이트 모드로 전환' : '다크 모드로 전환';
+    }
+
+    toggle.addEventListener('click', () => {
+      const theme = currentTheme() === 'dark' ? 'light' : 'dark';
+      root.dataset.theme = theme;
+      try {
+        localStorage.setItem('ttabu0430-blog-theme', theme);
+      } catch {}
+      updateToggle();
+    });
+    systemTheme.addEventListener('change', updateToggle);
+    updateToggle();
+    toggle.hidden = false;
+  </script>
+</body>
+</html>
